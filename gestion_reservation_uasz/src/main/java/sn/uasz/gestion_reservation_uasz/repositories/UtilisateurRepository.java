@@ -1,14 +1,12 @@
 package sn.uasz.gestion_reservation_uasz.repositories;
 
-import java.util.Optional;
-
 import org.springframework.data.repository.CrudRepository;
 
-import sn.uasz.gestion_reservation_uasz.models.utilisateur;
+import sn.uasz.gestion_reservation_uasz.models.Utilisateur;
 
 
-public interface UtilisateurRepository extends CrudRepository<utilisateur , Integer>{
+import java.util.Optional;
 
-    Optional<utilisateur> findByEmail(String email);
-  
+public interface UtilisateurRepository extends CrudRepository<Utilisateur, Integer> {
+    Optional<Utilisateur> findByEmail(String email);
 }
