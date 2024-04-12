@@ -36,6 +36,4 @@ public class Ressource {
     // @JsonIgnore
     // @OneToMany(mappedBy = "ressource")
     // private List<Reservation> reservations;
-
-
 }

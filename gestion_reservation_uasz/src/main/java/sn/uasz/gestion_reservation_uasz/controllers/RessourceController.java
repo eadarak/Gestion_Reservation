@@ -53,6 +53,4 @@ public class RessourceController {
         return ResponseEntity.status(HttpStatus.OK).body("La ressource" + id +" a ete supprime.");
     }
     
-    
-    
 }
