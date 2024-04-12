@@ -1,21 +1,17 @@
 package sn.uasz.gestion_reservation_uasz;
 
-import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 
 import lombok.extern.slf4j.Slf4j;
-// import sn.uasz.gestion_reservation_uasz.models.Reservation;
 import sn.uasz.gestion_reservation_uasz.models.Ressource;
-// import sn.uasz.gestion_reservation_uasz.services.ReservationService;
 import sn.uasz.gestion_reservation_uasz.services.RessourceService;
 
 @Slf4j
-@SpringBootApplication(exclude={SecurityAutoConfiguration.class})
+@SpringBootApplication
 public class GestionReservationUaszApplication implements CommandLineRunner{
 
 	@Autowired
