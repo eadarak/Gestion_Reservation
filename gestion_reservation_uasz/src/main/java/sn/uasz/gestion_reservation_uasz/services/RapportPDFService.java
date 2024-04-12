@@ -15,17 +15,17 @@ import com.lowagie.text.DocumentException;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import sn.uasz.gestion_reservation_uasz.models.RapportPDF;
-// import sn.uasz.gestion_reservation_uasz.models.Reservation;
+import sn.uasz.gestion_reservation_uasz.models.Reservation;
 
 @Service
 @Transactional
 public class RapportPDFService {
-    // @Autowired
-    // private ReservationService reservationService;
+    @Autowired
+    private ReservationService reservationService;
 
     public void genererRapportPDF(HttpServletResponse response) {
         try {
-            // List<Reservation> reservations = reservationService.listReservations(); 
+            List<Reservation> reservations = reservationService.listReservations(); 
             
             // Configuration de la réponse HTTP pour le téléchargement du fichier PDF
             response.setContentType("application/pdf");
@@ -36,7 +36,7 @@ public class RapportPDFService {
             response.setHeader(headerKey, headerValue);
 
             RapportPDF rapportPDF = new RapportPDF();
-            // rapportPDF.setReservations(reservations);
+            rapportPDF.setReservations(reservations);
             rapportPDF.genererRapport(response);
         } catch (DocumentException | IOException e) {
             e.printStackTrace();
@@ -67,7 +67,7 @@ public class RapportPDFService {
              finMois.set(Calendar.SECOND, 59);
 
             // Récupérer les réservations du mois en cours
-            // List<Reservation> reservations = reservationService.listReservationEntreDeuxDate(debutMois.getTime(), finMois.getTime());
+            List<Reservation> reservations = reservationService.listReservationEntreDeuxDate(debutMois.getTime(), finMois.getTime());
 
             // Configuration de la réponse HTTP pour le téléchargement du fichier PDF
             response.setContentType("application/pdf");
@@ -79,7 +79,7 @@ public class RapportPDFService {
 
             // Générer le rapport PDF avec les réservations filtrées
             RapportPDF rapportPDF = new RapportPDF();
-            // rapportPDF.setReservations(reservations);
+            rapportPDF.setReservations(reservations);
             rapportPDF.genererRapport(response);
 
 

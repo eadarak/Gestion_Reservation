@@ -1,67 +1,101 @@
 package sn.uasz.gestion_reservation_uasz.services;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import sn.uasz.gestion_reservation_uasz.models.Role;
-import sn.uasz.gestion_reservation_uasz.models.TypeDeRole;
-import sn.uasz.gestion_reservation_uasz.models.Utilisateur;
-import sn.uasz.gestion_reservation_uasz.repositories.UtilisateurRepository;
+import java.util.List;
+import java.util.Optional;
 
-import org.springframework.security.core.userdetails.UserDetails;
+
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+import sn.uasz.gestion_reservation_uasz.models.Role;
+import sn.uasz.gestion_reservation_uasz.models.TypeRole;
+import sn.uasz.gestion_reservation_uasz.models.Utilisateur;
+import sn.uasz.gestion_reservation_uasz.repositories.RoleRepository;
+import sn.uasz.gestion_reservation_uasz.repositories.UtilisateurRepository;
 
-import java.time.Instant;
-import java.util.Map;
-import java.util.Optional;
-
-@AllArgsConstructor
 @Service
+@Transactional
+@AllArgsConstructor
 public class UtilisateurService implements UserDetailsService {
-    private UtilisateurRepository utilisateurRepository;
+
+    private UtilisateurRepository uRepository;
     private BCryptPasswordEncoder passwordEncoder;
-    // private ValidationService validationService;
-    public void inscription(Utilisateur utilisateur) {
+    private RoleRepository roleRepository;
 
-        if(!utilisateur.getEmail().contains("@")) {
-            throw  new RuntimeException("Votre mail invalide");
-        }
-        if(!utilisateur.getEmail().contains(".")) {
-            throw  new RuntimeException("Votre mail invalide");
+    public void inscription(Utilisateur utilisateur){
+        uRepository.save(utilisateur);
+    }
+
+    public Utilisateur inscrire(Utilisateur utilisateur){
+        if (utilisateur.getEmail().indexOf("@") == -1) {
+            throw new RuntimeException("Votre email est invalide !!");
         }
 
-        Optional<Utilisateur> utilisateurOptional = this.utilisateurRepository.findByEmail(utilisateur.getEmail());
-        if(utilisateurOptional.isPresent()) {
-            throw  new RuntimeException("Votre mail est déjà utilisé");
+        if (utilisateur.getEmail().indexOf(".") == -1) {
+            throw new RuntimeException("Votre email est invalide !!");
+        }
+        
+        
+        Optional<Utilisateur> utilisateurOption = uRepository.findByEmail(utilisateur.getEmail());
+        if (utilisateurOption.isPresent()) {
+            throw new RuntimeException("L'email est deja utilise");
         }
         String mdpCrypte = this.passwordEncoder.encode(utilisateur.getMdp());
         utilisateur.setMdp(mdpCrypte);
 
-        Role roleUtilisateur = new Role();
-        roleUtilisateur.setLibelle(TypeDeRole.admin_primaire);
-        utilisateur.setRole(roleUtilisateur);
+        // Role roleUtilisateur = new Role();
+        // roleUtilisateur.setLibelle(TypeRole.UTILISATEUR);
 
-        utilisateur = this.utilisateurRepository.save(utilisateur);
-        
+        // utilisateur.setRole(roleUtilisateur);
+
+        Optional<Role> role = roleRepository.findByLibelle(TypeRole.UTILISATEUR);
+        if(role.isPresent()){
+            utilisateur.setRole(role.get());
+        }
+
+        return uRepository.save(utilisateur);
     }
 
-    // public void activation(Map<String, String> activation) {
-    //     Validation validation = this.validationService.lireEnFonctionDuCode(activation.get("code"));
-    //     if(Instant.now().isAfter(validation.getExpiration())){
-    //         throw  new RuntimeException("Votre code a expiré");
-    //     }
-    //     Utilisateur utilisateurActiver = this.utilisateurRepository.findById(validation.getUtilisateur().getId()).orElseThrow(() -> new RuntimeException("Utilisateur inconnu"));
-    //     utilisateurActiver.setActif(true);
-    //     this.utilisateurRepository.save(utilisateurActiver);
-    // }
+    public Utilisateur ajouter_utilisateur(Utilisateur utilisateur){
+        if (utilisateur.getEmail().indexOf("@") == -1) {
+            throw new RuntimeException("Votre email est invalide !!");
+        }
+
+        if (utilisateur.getEmail().indexOf(".") == -1) {
+            throw new RuntimeException("Votre email est invalide !!");
+        }
+        
+        
+        Optional<Utilisateur> utilisateurOption = uRepository.findByEmail(utilisateur.getEmail());
+        if (utilisateurOption.isPresent()) {
+            throw new RuntimeException("L'email est deja utilise");
+        }
+        String mdpCrypte = this.passwordEncoder.encode("Passer123");
+        utilisateur.setMdp(mdpCrypte);
+
+        Optional<Role> role = roleRepository.findByLibelle(TypeRole.RESPONSABLE);
+        if(role.isPresent()){
+            utilisateur.setRole(role.get());
+        }
+        
+
+        return uRepository.save(utilisateur);
+    }
+
+
+    public List<Utilisateur> lister_utilisateur(){
+        return uRepository.findAll();
+    }
 
     @Override
     public Utilisateur loadUserByUsername(String username) throws UsernameNotFoundException {
-        return this.utilisateurRepository
-                .findByEmail(username)
-                .orElseThrow(() -> new  UsernameNotFoundException("Aucun utilisateur ne corespond à cet identifiant"));
+        return this.uRepository
+                    .findByEmail(username)
+                    .orElseThrow(() -> new UsernameNotFoundException( username +" pas de correspondance"));
     }
+
 }
