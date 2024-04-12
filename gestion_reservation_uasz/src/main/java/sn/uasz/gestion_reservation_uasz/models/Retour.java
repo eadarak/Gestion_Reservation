@@ -1,9 +1,6 @@
 package sn.uasz.gestion_reservation_uasz.models;
 
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.util.Date;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,7 +9,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,15 +19,17 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Categorie {
+public class Retour {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idCategorie;
-    private String libelleCategorie;
-    private String type;
-    
-    @JsonIgnore
-    @OneToMany(mappedBy = "categorie")
-    private List<Ressource> Ressource;
+    private Long idRetour;
+    @Temporal(TemporalType.DATE)
+    private Date dateRetour;
+    private int heureRetour;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="ressource")
+    private Ressource ressource;
+
 }

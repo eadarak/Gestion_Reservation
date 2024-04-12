@@ -1,43 +1,66 @@
 package sn.uasz.gestion_reservation_uasz.models;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.Collections;
-
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
 @Entity
-@Table(name = "utilisateur")
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Utilisateur implements UserDetails {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String nom;
+    private String prenom;
+    private String matricule;
+    private String email;
     @Column(name = "mot_de_passe")
     private String mdp;
-    private String nom;
-
-    private String email;
     private boolean actif = true;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     private Role role;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "utilisateur")
+    private List<Ressource> ressources;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "utilisateur")
+    private List<Reservation> reservations;
+
+    // @JsonIgnore
+    // @OneToMany(mappedBy = "utilisateur")
+    // private List<Pret> prets;
+    // @JsonIgnore
+    // @OneToMany(mappedBy = "utilisateur")
+    // private List<Retour> retours;
+
+    
+
 
 
     @Override
@@ -47,31 +70,35 @@ public class Utilisateur implements UserDetails {
 
     @Override
     public String getPassword() {
-        return this.mdp;
+      return this.mdp;
     }
 
     @Override
     public String getUsername() {
-        return this.email;
+       return this.email;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return this.actif;
+       return this.actif;
     }
 
     @Override
     public boolean isAccountNonLocked() {
         return this.actif;
+
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
         return this.actif;
+
     }
 
     @Override
     public boolean isEnabled() {
         return this.actif;
+
     }
+    
 }

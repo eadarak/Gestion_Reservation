@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RapportPDF {
-    // private List<Reservation> reservations;
+    private List<Reservation> reservations;
     private DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
     public void genererRapport(HttpServletResponse response) throws DocumentException, IOException{
@@ -136,24 +136,24 @@ public class RapportPDF {
         Font fontCell = FontFactory.getFont(FontFactory.TIMES_ROMAN,   14);
 
         // Iterating over the list of reservations
-        // for (Reservation r : reservations) {
-        //     // Ajouter les cellules avec la police de taille 12
-        //     PdfPCell cell0 = new PdfPCell(new Phrase(String.valueOf(r.getIdReservation()), fontCell));
-        //     PdfPCell cell1 = new PdfPCell(new Phrase(r.getRessource().getLibelleRessource(), fontCell));
-        //     PdfPCell cell2 = new PdfPCell(new Phrase(dateFormat.format(r.getDatePrevue()), fontCell));
-        //     PdfPCell cell3 = new PdfPCell(new Phrase(String.valueOf(r.getHeureDebut()), fontCell));
-        //     PdfPCell cell4 = new PdfPCell(new Phrase(String.valueOf(r.getHeureFin()), fontCell));
-        //     PdfPCell cell5 = new PdfPCell(new Phrase(dateFormat.format(r.getDateReservation()), fontCell));
+        for (Reservation r : reservations) {
+            // Ajouter les cellules avec la police de taille 12
+            PdfPCell cell0 = new PdfPCell(new Phrase(String.valueOf(r.getIdReservation()), fontCell));
+            PdfPCell cell1 = new PdfPCell(new Phrase(r.getRessource().getLibelleRessource(), fontCell));
+            PdfPCell cell2 = new PdfPCell(new Phrase(dateFormat.format(r.getDatePrevue()), fontCell));
+            PdfPCell cell3 = new PdfPCell(new Phrase(String.valueOf(r.getHeureDebut()), fontCell));
+            PdfPCell cell4 = new PdfPCell(new Phrase(String.valueOf(r.getHeureFin()), fontCell));
+            PdfPCell cell5 = new PdfPCell(new Phrase(dateFormat.format(r.getDateReservation()), fontCell));
 
 
-        //     // Ajouter les cellules à la table
-        //     table.addCell(cell0);
-        //     table.addCell(cell1);
-        //     table.addCell(cell2);
-        //     table.addCell(cell3);
-        //     table.addCell(cell4);
-        //     table.addCell(cell5);
-        // }
+            // Ajouter les cellules à la table
+            table.addCell(cell0);
+            table.addCell(cell1);
+            table.addCell(cell2);
+            table.addCell(cell3);
+            table.addCell(cell4);
+            table.addCell(cell5);
+        }
         // Adding the created table to document
 		document.add(table);
 
