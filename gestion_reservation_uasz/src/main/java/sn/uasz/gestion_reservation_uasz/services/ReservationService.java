@@ -15,6 +15,7 @@ import sn.uasz.gestion_reservation_uasz.models.Ressource;
 import sn.uasz.gestion_reservation_uasz.models.Utilisateur;
 import sn.uasz.gestion_reservation_uasz.repositories.ReservationRepository;
 import sn.uasz.gestion_reservation_uasz.repositories.RessourceRepository;
+import sn.uasz.gestion_reservation_uasz.repositories.UtilisateurRepository;
 
 @Slf4j
 @Service
@@ -25,6 +26,8 @@ public class ReservationService {
     @Autowired
     private RessourceRepository ressourceRepository;
     
+    @Autowired
+    private UtilisateurRepository utilisateurRepository;
 
     public Reservation creationReservation(Reservation reservation) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -157,4 +160,15 @@ public class ReservationService {
         }
     }
     
+    public List<Reservation> listerReservationUtilisateur(Long id){
+        Utilisateur utilisateur = utilisateurRepository.findById(id)
+                                        .orElseThrow(() -> new RuntimeException("Utilisateur n'existe pas !"));
+        
+        List<Reservation> reservations = reservationRepository.findByUtilisateur(utilisateur);
+        if( reservations != null){
+            return reservations;
+        }else{
+            return null;
+        }
+    }
 }
