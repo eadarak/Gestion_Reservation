@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-GestionReservationUaszApplication<gestion_reservation_uasz>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "sn.uasz.gestion_reservation_uasz.GestionReservationUaszApplication",
+            "projectName": "gestion_reservation_uasz",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

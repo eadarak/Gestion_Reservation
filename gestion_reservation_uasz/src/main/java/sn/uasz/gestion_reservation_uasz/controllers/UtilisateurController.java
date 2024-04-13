@@ -65,7 +65,7 @@ public class UtilisateurController {
 
     @PostMapping(path = "connexion")
     public Map<String, String>  connexion (@RequestBody AuthenticationDTO  authenticationDTO){
-        log.info("connexion");
+        log.info("Tentative de connexion");
         final Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(authenticationDTO.username(), authenticationDTO.password())
         );
