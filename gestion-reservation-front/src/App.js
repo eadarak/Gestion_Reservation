@@ -11,6 +11,7 @@ import Categorie from './Pages/Categorie';
 import Utilisateur from './Pages/Utilisateur';
 import Authentification from './Pages/Authentification';
 import Documentation from './Pages/Documentation';
+import Inscription from './Component/Inscription.jsx';
 
 const router = createBrowserRouter([
   {
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
   {
     path: '/documentation',
     element: <Layout><Documentation /></Layout>
+  },
+  {
+    path: '/inscription',
+    element: <Layout>< Inscription/></Layout>
   }
 ]);
 

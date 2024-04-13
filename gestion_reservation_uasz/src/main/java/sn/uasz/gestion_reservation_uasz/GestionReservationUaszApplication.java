@@ -93,9 +93,9 @@ public class GestionReservationUaszApplication implements CommandLineRunner{
 		roleRepository.save(role2);
 		roleRepository.save(role3);
 		
-		Utilisateur admin = new Utilisateur(null, "admin", "admin", null, "admin@uasz.sn",passwordEncoder.encode("admin") , true, role3, null, null);
+		// Utilisateur admin = new Utilisateur(null, "admin", "admin", null, "admin@uasz.sn",passwordEncoder.encode("admin") , true, role3, null, null);
 
-		uRepository.save(admin);
+		// uRepository.save(admin);
 
     }
 
