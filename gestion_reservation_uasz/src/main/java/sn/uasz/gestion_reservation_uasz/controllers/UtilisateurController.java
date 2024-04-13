@@ -71,6 +71,7 @@ public class UtilisateurController {
         );
 
         if (authentication.isAuthenticated()) {
+            log.info("Connexion réussie");
             return jwtService.generate(authenticationDTO.username());
         }
         
