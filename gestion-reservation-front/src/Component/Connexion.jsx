@@ -25,7 +25,7 @@ const Connexion = () => {
     setPassword("");
 
     try {
-      const response = await fetch("http://localhost:8080/api/connexion", {
+      const response = await fetch(URL_CONNEXION, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

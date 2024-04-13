@@ -17,6 +17,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -41,8 +42,10 @@ public class Utilisateur implements UserDetails {
     @Column(name = "mot_de_passe")
     private String mdp;
     private boolean actif = true;
-    @OneToOne(cascade = CascadeType.MERGE)
+    @ManyToOne 
+    @JoinColumn(name = "role_id")
     private Role role;
+
 
     @JsonIgnore
     @OneToMany(mappedBy = "utilisateur")

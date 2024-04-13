@@ -58,10 +58,12 @@ public class UtilisateurController {
 
     @PostMapping(path = "inscription")
     public ResponseEntity<Utilisateur> inscription(@RequestBody Utilisateur utilisateur) {
-        log.info("inscription");
+        log.info("Tentative d'inscription pour l'utilisateur avec l'email : {}", utilisateur.getEmail());
         Utilisateur user = uService.inscrire(utilisateur);
+        log.info("Inscription réussie pour l'utilisateur avec l'email : {}", utilisateur.getEmail());
         return new ResponseEntity<Utilisateur>(user, HttpStatus.OK);
-    }   
+    }
+      
 
     @PostMapping(path = "connexion")
     public Map<String, String>  connexion (@RequestBody AuthenticationDTO  authenticationDTO){

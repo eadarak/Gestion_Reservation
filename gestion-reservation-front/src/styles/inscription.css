@@ -1,0 +1,103 @@
+.inscription-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container-inscription {
+  width: 800px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+}
+
+.container-inscription h2 {
+  text-align: center;
+}
+
+/* .container-inscription .alert {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  .container-inscription .alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+  }
+  
+  .container-inscription .alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+  } */
+
+.container-inscription form {
+  display: grid;
+  gap: 10px;
+}
+
+.container-inscription .form-group {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.container-inscription input[type="text"],
+.container-inscription input[type="email"],
+.container-inscription input[type="password"] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+}
+
+.container-inscription .password-group {
+  position: relative;
+}
+
+.container-inscription .password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 400px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.container-inscription .btn[type="submit"] {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  background-color: var(--color-vert-1);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.75;
+  font-weight: 600;
+}
+
+.container-inscription .btn:hover {
+  background-color: var(--color-vert-3);
+}
+
+.container-inscription .signup-link {
+  text-align: center;
+  font-size: 14px;
+  color: #333333;
+}
+
+.container-inscription .signup-link a {
+  color: var(--color-vert-2);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.container-inscription .signup-link a:hover {
+  color: var(--color-vert-4);
+}
