@@ -31,35 +31,30 @@ public class UtilisateurService implements UserDetailsService {
     }
 
     public Utilisateur inscrire(Utilisateur utilisateur){
-        if (utilisateur.getEmail().indexOf("@") == -1) {
+        if (utilisateur.getEmail().indexOf("@") == -1 || utilisateur.getEmail().indexOf(".") == -1) {
             throw new RuntimeException("Votre email est invalide !!");
         }
-
-        if (utilisateur.getEmail().indexOf(".") == -1) {
-            throw new RuntimeException("Votre email est invalide !!");
-        }
-        
         
         Optional<Utilisateur> utilisateurOption = uRepository.findByEmail(utilisateur.getEmail());
         if (utilisateurOption.isPresent()) {
-            throw new RuntimeException("L'email est deja utilise");
+            throw new RuntimeException("L'email est déjà utilisé");
         }
+        
         String mdpCrypte = this.passwordEncoder.encode(utilisateur.getMdp());
         utilisateur.setMdp(mdpCrypte);
-
-        // Role roleUtilisateur = new Role();
-        // roleUtilisateur.setLibelle(TypeRole.UTILISATEUR);
-
-        // utilisateur.setRole(roleUtilisateur);
-
-        Optional<Role> role = roleRepository.findByLibelle(TypeRole.UTILISATEUR);
-        if(role.isPresent()){
-            utilisateur.setRole(role.get());
+    
+        // Récupérer le rôle correspondant à TypeRole.UTILISATEUR
+        Optional<Role> roleOption = roleRepository.findByLibelle(TypeRole.UTILISATEUR);
+        if (roleOption.isEmpty()) {
+            throw new RuntimeException("Le rôle utilisateur n'a pas été trouvé");
         }
-
+        
+        // Attribuer le rôle à l'utilisateur
+        utilisateur.setRole(roleOption.get());
+    
         return uRepository.save(utilisateur);
     }
-
+    
     public Utilisateur ajouter_utilisateur(Utilisateur utilisateur){
         if (utilisateur.getEmail().indexOf("@") == -1) {
             throw new RuntimeException("Votre email est invalide !!");

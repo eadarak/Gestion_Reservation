@@ -85,13 +85,13 @@ public class GestionReservationUaszApplication implements CommandLineRunner{
 		// 	}
 		// }
 
-		Role role1 = new Role(null, TypeRole.UTILISATEUR);
-		Role role2 = new Role(null, TypeRole.RESPONSABLE);
-		Role role3 = new Role(null, TypeRole.ADMINISTRATEUR);
+		// Role role1 = new Role(null, TypeRole.UTILISATEUR,null);
+		// Role role2 = new Role(null, TypeRole.RESPONSABLE, null);
+		// Role role3 = new Role(null, TypeRole.ADMINISTRATEUR,null);
 
-		roleRepository.save(role1);
-		roleRepository.save(role2);
-		roleRepository.save(role3);
+		// roleRepository.save(role1);
+		// roleRepository.save(role2);
+		// roleRepository.save(role3);
 		
 		// Utilisateur admin = new Utilisateur(null, "admin", "admin", null, "admin@uasz.sn",passwordEncoder.encode("admin") , true, role3, null, null);
 
