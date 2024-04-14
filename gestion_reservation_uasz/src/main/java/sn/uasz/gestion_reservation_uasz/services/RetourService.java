@@ -1,6 +1,5 @@
 package sn.uasz.gestion_reservation_uasz.services;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +14,9 @@ import sn.uasz.gestion_reservation_uasz.repositories.ReservationRepository;
 import sn.uasz.gestion_reservation_uasz.repositories.RessourceRepository;
 import sn.uasz.gestion_reservation_uasz.repositories.RetourRepository;
 
+/**
+ * Service pour la gestion des retours de ressources.
+ */
 @Slf4j
 @Service
 @Transactional
@@ -28,38 +30,52 @@ public class RetourService {
     @Autowired
     private ReservationRepository reservationRepository;
 
-    public List<Retour> listerRetours(){
+    /**
+     * Liste tous les retours de ressources.
+     * 
+     * @return La liste de tous les retours de ressources.
+     */
+    public List<Retour> listerRetours() {
         return repository.findAll();
     }
 
-    public Retour rechercherRetour(Long id){
-        return repository.findById(id).get();
+    /**
+     * Recherche un retour de ressource par son identifiant.
+     * 
+     * @param id L'identifiant du retour de ressource à rechercher.
+     * @return Le retour de ressource trouvé.
+     */
+    public Retour rechercherRetour(Long id) {
+        return repository.findById(id).orElse(null);
     }
 
-    public Retour creerRetour(Retour r){
+    /**
+     * Crée un nouveau retour de ressource.
+     * 
+     * @param r Le retour de ressource à créer.
+     * @return Le retour de ressource créé, ou null si la ressource associée est
+     *         introuvable ou n'est pas en prêt.
+     */
+    public Retour creerRetour(Retour r) {
         Ressource ressource = r.getRessource();
         Long rID = ressource.getIdRessource();
         Ressource existingRessource = ressourceRepository.findById(rID).orElse(null);
 
         if (existingRessource != null && existingRessource.getEtat().equalsIgnoreCase("En pret")) {
-            r.setDateRetour(new Date(System.currentTimeMillis()));
-
-            List<Reservation> reservations = reservationRepository.findFutureReservationsForRessource(ressource, new Date());
+            List<Reservation> reservations = reservationRepository.findFutureReservationsForRessource(existingRessource,
+                    r.getDateRetour());
             if (reservations.isEmpty()) {
-                ressource.setEtat("Disponible");
-            }else{
-                ressource.setEtat("Reservee");
+                existingRessource.setEtat("Disponible");
+            } else {
+                existingRessource.setEtat("Reservee");
             }
 
-            ressourceRepository.save(ressource);
+            ressourceRepository.save(existingRessource);
             r.setRessource(existingRessource);
             return repository.save(r);
-
-
+        } else {
+            log.info("Ressource inexistante ou non en prêt");
+            return null;
         }
-        log.info("Ressource  inexistante ");
-        return null;
-        
     }
-
 }

@@ -11,7 +11,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,20 +19,21 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Représente un utilisateur dans le système de gestion des réservations.
+ */
 @Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Utilisateur implements UserDetails {
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nom;
     private String prenom;
@@ -42,10 +42,9 @@ public class Utilisateur implements UserDetails {
     @Column(name = "mot_de_passe")
     private String mdp;
     private boolean actif = true;
-    @ManyToOne 
+    @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
-
 
     @JsonIgnore
     @OneToMany(mappedBy = "utilisateur")
@@ -55,53 +54,48 @@ public class Utilisateur implements UserDetails {
     @OneToMany(mappedBy = "utilisateur")
     private List<Reservation> reservations;
 
-    // @JsonIgnore
-    // @OneToMany(mappedBy = "utilisateur")
-    // private List<Pret> prets;
-    // @JsonIgnore
-    // @OneToMany(mappedBy = "utilisateur")
-    // private List<Retour> retours;
-
-    
-
-
-
+    /**
+     * Retourne les autorités accordées à l'utilisateur.
+     */
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_"+this.role.getLibelle()));
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + this.role.getLibelle()));
     }
 
+    @JsonIgnore
     @Override
     public String getPassword() {
-      return this.mdp;
+        return this.mdp;
     }
 
+    @JsonIgnore
     @Override
     public String getUsername() {
-       return this.email;
+        return this.email;
     }
 
+    @JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
-       return this.actif;
+        return this.actif;
     }
 
+    @JsonIgnore
     @Override
     public boolean isAccountNonLocked() {
         return this.actif;
-
     }
 
+    @JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() {
         return this.actif;
-
     }
 
+    @JsonIgnore
     @Override
     public boolean isEnabled() {
         return this.actif;
-
     }
-    
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import Logo from "../assets/logos/Logo_uasz-bg-transparent.png";
-import "../styles/Navbar.css"; // Assurez-vous d'importer votre fichier CSS
+import "../styles/Navbar.css";  
 
 export default function Navbar() {
 
@@ -57,6 +57,15 @@ export default function Navbar() {
           <i class="fa-solid fa-sitemap"></i>
           Categorie
         </NavLink>
+
+        <NavLink
+          to="/utilisateur"
+          className={({ isActive }) => (isActive ? "active-link" : "link")}
+        >
+          <i class="fa-solid fa-users"></i>
+          Utilisateur
+        </NavLink>
+
       </nav>
 
       <hr className="separator" />

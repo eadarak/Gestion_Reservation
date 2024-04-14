@@ -49,6 +49,7 @@ const Inscription = () => {
       setSuccessMessage("Inscription réussie !");
       setErrorMessage("");
       setFormData(INITIAL_USER);
+      window.location.href = '/authentification';
     } catch (error) {
       console.error("Erreur lors de la connexion:", error);
       setErrorMessage("Erreur lors de la connexion.");

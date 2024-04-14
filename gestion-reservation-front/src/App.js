@@ -12,6 +12,9 @@ import Utilisateur from './Pages/Utilisateur';
 import Authentification from './Pages/Authentification';
 import Documentation from './Pages/Documentation';
 import Inscription from './Component/Inscription.jsx';
+import FaireReservation from './Pages/FaireReservation.jsx';
+import FairePret from './Pages/FairePret.jsx';
+import ReservationDuMois from './Pages/ReservationDuMois.jsx';
 
 const router = createBrowserRouter([
   {
@@ -53,13 +56,24 @@ const router = createBrowserRouter([
   {
     path: '/inscription',
     element: <Layout>< Inscription/></Layout>
+  },
+  {
+    path: '/faire-reservation',
+    element: <Layout>< FaireReservation/></Layout>
+  },
+  {
+    path: '/faire-pret',
+    element: <Layout>< FairePret/></Layout>
+  },
+  {
+    path: '/reservations-du-mois',
+    element: <Layout>< ReservationDuMois/></Layout>
   }
 ]);
 
 function App() {
   return (
     <RouterProvider router={router}>
-      {/* Inclure ici le composant Layout qui contient Home */}
     </RouterProvider>
   );
 }

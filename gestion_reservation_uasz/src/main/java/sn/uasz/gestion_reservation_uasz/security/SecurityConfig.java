@@ -25,6 +25,9 @@ import org.springframework.http.HttpMethod;
 
 import lombok.AllArgsConstructor;
 
+/**
+ * Configuration de la sécurité pour l'application.
+ */
 @Configuration
 @EnableWebSecurity
 @AllArgsConstructor
@@ -32,35 +35,33 @@ public class SecurityConfig {
 	private BCryptPasswordEncoder passwordEncoder;
 	private JwtFilter jwtFilter;
 
-	// @Bean
-	// public SecurityFilterChain securityFilterChain(HttpSecurity http) throws
-	// Exception {
-	// http
-	// .csrf(AbstractHttpConfigurer::disable)
-	// .authorizeHttpRequests((authorize) -> authorize
-	// .requestMatchers("/inscription").permitAll()
-	// .requestMatchers("/connexion").permitAll()
-
-	// // .requestMatchers("/reservation").hasRole("UTILISATEUR")
-	// // .requestMatchers("/ressource").hasRole("RESPONSABLE")
-	// // .requestMatchers("categorie").hasRole("RESPONSABLE")
-	// // .requestMatchers( "/utilisateur").hasRole("ADMINISTRATEUR")
-
-	// .anyRequest().authenticated())
-	// .sessionManagement((session) -> session
-	// .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-	// .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-
-	// return http.build();
-	// }
-
+	/**
+	 * Configure la chaîne de filtres de sécurité.
+	 * 
+	 * @param http Objet HttpSecurity
+	 * @return Objet SecurityFilterChain
+	 * @throws Exception Exception en cas de problème de configuration
+	 */
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
 				.csrf(AbstractHttpConfigurer::disable)
-				.cors() // Ajouter la configuration CORS
+				.cors() // Ajoute la configuration CORS
 				.and()
 				.authorizeHttpRequests((authorize) -> authorize
+						.requestMatchers(
+							"/api/v1/auth/**",
+								"/v2/api-docs/**",
+								"/v3/api-docs/**",
+								"/v3/api-docs",
+								"/swagger-resources/**",
+								"/swagger-resources",
+								"/configuration/ui",
+								"/configuration/security",
+								"/swagger-ui/**",
+								"/webjars/**",
+								"/swagger-ui.html")
+						.permitAll()
 						.requestMatchers("/inscription").permitAll()
 						.requestMatchers("/connexion").permitAll()
 						.anyRequest().authenticated())
@@ -71,12 +72,25 @@ public class SecurityConfig {
 		return http.build();
 	}
 
+	/**
+	 * Configure le gestionnaire d'authentification.
+	 * 
+	 * @param authenticationConfiguration Objet AuthenticationConfiguration
+	 * @return Gestionnaire d'authentification
+	 * @throws Exception Exception en cas de problème de configuration
+	 */
 	@Bean
 	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
 			throws Exception {
 		return authenticationConfiguration.getAuthenticationManager();
 	}
 
+	/**
+	 * Configure le fournisseur d'authentification.
+	 * 
+	 * @param userDetailsService Objet UserDetailsService
+	 * @return Fournisseur d'authentification
+	 */
 	@Bean
 	public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService) {
 		DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
@@ -85,17 +99,21 @@ public class SecurityConfig {
 		return daoAuthenticationProvider;
 	}
 
+	/**
+	 * Configure la politique CORS (Cross-Origin Resource Sharing).
+	 * 
+	 * @return Objet CorsConfigurationSource
+	 */
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
-		configuration.setAllowedOriginPatterns(Arrays.asList("*")); // Permettre toutes les origines
-		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Méthodes HTTP autorisées
+		configuration.setAllowedOriginPatterns(Arrays.asList("*")); // Autoriser toutes les origines
+		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Méthodes HTTP
+																									// autorisées
 		configuration.setAllowedHeaders(Arrays.asList("*")); // Tous les en-têtes autorisés
 		configuration.setAllowCredentials(true); // Autoriser les cookies
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", configuration);
 		return source;
 	}
-
-
 }

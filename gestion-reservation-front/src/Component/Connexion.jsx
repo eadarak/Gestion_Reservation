@@ -46,6 +46,7 @@ const Connexion = () => {
         console.log("Rôle de l'utilisateur connecté:", userRole);
         setSuccessMessage("Connexion réussie !");
         setErrorMessage("");
+        window.location.href = '/';
       } else {
         const errorData = await response.json();
         setErrorMessage(errorData.message);
