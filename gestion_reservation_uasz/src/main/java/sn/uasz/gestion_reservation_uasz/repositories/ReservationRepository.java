@@ -22,4 +22,10 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     List<Reservation> findFutureReservationsForRessource(@Param("ressource") Ressource ressource, @Param("currentDate") Date currentDate);
 
     List<Reservation> findByUtilisateur(Utilisateur utilisateur);
+
+    @Query("SELECT r FROM Reservation r WHERE MONTH(r.dateReservation) = MONTH(CURRENT_DATE) AND YEAR(r.dateReservation) = YEAR(CURRENT_DATE)")
+    List<Reservation> findReservationsThisMonth();
+
 }
+
+

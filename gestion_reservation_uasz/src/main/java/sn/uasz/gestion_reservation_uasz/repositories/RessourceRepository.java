@@ -10,4 +10,7 @@ import sn.uasz.gestion_reservation_uasz.models.Ressource;
 public interface RessourceRepository extends JpaRepository<Ressource,Long>{
     @Query("SELECT r FROM Ressource r WHERE r.etat = 'Réservée'")
     List<Ressource> findRessourcesReservees();
+
+    List<Ressource> findByEtatIn(String... etats);
+
 }

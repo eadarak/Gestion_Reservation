@@ -29,6 +29,13 @@ public class ReservationController {
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 
+    @GetMapping("/mois")
+    public ResponseEntity<List<Reservation>> list_reservations_du_mois() {
+        List<Reservation> reservations = rService.listerReservationsDuMois();
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
+
     @GetMapping("/{id}")
     public ResponseEntity<Reservation> find_reservation(@PathVariable("id") Long id) {
         return new ResponseEntity<>(rService.findReservation(id), HttpStatus.OK);

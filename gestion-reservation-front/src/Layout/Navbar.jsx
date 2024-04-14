@@ -57,6 +57,15 @@ export default function Navbar() {
           <i class="fa-solid fa-sitemap"></i>
           Categorie
         </NavLink>
+
+        <NavLink
+          to="/utilisateur"
+          className={({ isActive }) => (isActive ? "active-link" : "link")}
+        >
+          <i class="fa-solid fa-users"></i>
+          Utilisateur
+        </NavLink>
+
       </nav>
 
       <hr className="separator" />

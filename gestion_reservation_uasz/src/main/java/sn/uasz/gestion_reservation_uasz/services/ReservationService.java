@@ -43,15 +43,16 @@ public class ReservationService {
                     Date dateReservation = new Date(System.currentTimeMillis());
                     reservation.setDateReservation(dateReservation);
                     // Vérifier si la date prévue est postérieure ou égale à la date de réservation
-                    if (reservation.getDatePrevue().compareTo(dateReservation) >= 0) {
-                        existingRessource.setEtat("Reservee");
-                        ressourceRepository.save(existingRessource);
-                        reservation.setRessource(existingRessource);
-                        return reservationRepository.save(reservation);
-                    } else {
-                        log.info("La date prévue doit être postérieure ou égale à la date de réservation.");
+                    if (reservation.getDatePrevue().compareTo(dateReservation) < 0) {
+                        log.info("La date prévue doit être postérieure ou egale la date de réservation.");
                         return null;
                     }
+
+                    existingRessource.setEtat("Reservee");
+                    ressourceRepository.save(existingRessource);
+                    reservation.setRessource(existingRessource);
+                    return reservationRepository.save(reservation);
+                    
                 } else if (existingRessource.getEtat().equalsIgnoreCase("Reservee") || existingRessource.getEtat().equalsIgnoreCase("En Pret")) {
                     // La ressource est déjà réservée ou en prêt, vérifier les réservations existantes
                     List<Reservation> reservations = reservationRepository.findByRessourceAndDatePrevue(existingRessource, reservation.getDatePrevue());
@@ -85,12 +86,6 @@ public class ReservationService {
         }
     }
             
-        
-      
-    
-    
-    
-    
 
     public List<Reservation> listReservations(){
         return reservationRepository.findAll();
@@ -106,7 +101,6 @@ public class ReservationService {
     
         if (existingReservation != null) {
             if (r.getDatePrevue().compareTo(existingReservation.getDateReservation()) < 0) {
-                // La nouvelle date prévue est antérieure à la date de réservation, la modification n'est pas autorisée
                 log.info("la modification de la réservation n'est pas autorisée ");
                 return null;
             }
@@ -124,13 +118,10 @@ public class ReservationService {
                 }
             }
             
-            // Mettre à jour l'ID de la réservation
             r.setIdReservation(id);
             
-            // Enregistrer la réservation mise à jour
             return reservationRepository.save(r);
         } else {
-            // La réservation n'existe pas, retourner null
             log.info("la modification de la réservation n'est pas autorisée ");
             return null;
         }
@@ -171,4 +162,9 @@ public class ReservationService {
             return null;
         }
     }
+
+    public List<Reservation> listerReservationsDuMois() {
+        return reservationRepository.findReservationsThisMonth();
+    }
 }
+

@@ -32,6 +32,24 @@ public class RessourceController {
         return new ResponseEntity<>(ressources, HttpStatus.OK);
     }
 
+    @GetMapping("/reservables")
+    public ResponseEntity<List<Ressource>> lister_ressources_reservable() {
+        List<Ressource> ressources = rService.listerRessourcesDisponiblesOuReservees();
+        return new ResponseEntity<>(ressources, HttpStatus.OK);
+    }
+
+    @GetMapping("/pretables")
+    public ResponseEntity<List<Ressource>> lister_ressources_pretables() {
+        List<Ressource> ressources = rService.listerRessourcesReservees();
+        return new ResponseEntity<>(ressources, HttpStatus.OK);
+    }
+
+    @GetMapping("/retours")
+    public ResponseEntity<List<Ressource>> lister_ressources_retours() {
+        List<Ressource> ressources = rService.listerRessourcesEnPret();
+        return new ResponseEntity<>(ressources, HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Ressource> rechercher_ressource(@PathVariable("id") Long id) {
         return new ResponseEntity<>(rService.rechercherRessource(id), HttpStatus.OK);
@@ -44,10 +62,10 @@ public class RessourceController {
     
     @PutMapping("/{id}")
     public  ResponseEntity<Ressource> modifier_ressource(@PathVariable("id") Long id, @RequestBody Ressource r) {
-      return  new ResponseEntity<>(rService.UpdateRessource(r, id), HttpStatus.OK);
+      return  new ResponseEntity<>(rService.updateRessource(r, id), HttpStatus.OK);
     }
     
-    @DeleteMapping("/id")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> delete_ressource(@PathVariable("id") Long id){
         rService.DeleteRessource(id);
         return ResponseEntity.status(HttpStatus.OK).body("La ressource" + id +" a ete supprime.");

@@ -13,13 +13,14 @@ import {
   Select,
   MenuItem,
   IconButton,
-  Button,
 } from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
-import { URL_RESERVATION } from "../constante/Server";
-import { Link } from "react-router-dom";
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import { URL_RAPPORT, URL_RESERVATION } from "../constante/Server";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
-const Reservation = () => {
+const ReservationDuMois = () => {
   const [reservations, setReservations] = useState([]);
   const [filteredReservations, setFilteredReservations] = useState([]);
   const [perPage, setPerPage] = useState(5);
@@ -32,7 +33,7 @@ const Reservation = () => {
       try {
         const sessionToken = sessionStorage.getItem("bearer");
 
-        const response = await fetch(URL_RESERVATION, {
+        const response = await fetch(URL_RESERVATION + "/mois", {
           headers: {
             Authorization: `Bearer ${sessionToken}`,
           },
@@ -58,7 +59,9 @@ const Reservation = () => {
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
     const filtered = reservations.filter((reservation) =>
-      reservation.libelleRessource.toLowerCase().includes(event.target.value.toLowerCase())
+      reservation.libelleRessource
+        .toLowerCase()
+        .includes(event.target.value.toLowerCase())
     );
     setFilteredReservations(filtered);
   };
@@ -96,51 +99,126 @@ const Reservation = () => {
 
       const sessionToken = sessionStorage.getItem("bearer");
 
-      const response = await fetch(`${URL_RESERVATION}/annuler-reservation/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${sessionToken}`,
-        },
-      });
+      const response = await fetch(
+        `${URL_RESERVATION}/annuler-reservation/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${sessionToken}`,
+          },
+        }
+      );
       if (!response.ok) {
         throw new Error("Failed to cancel reservation");
       }
-      setReservations(reservations.filter((reservation) => reservation.idReservation !== id));
-      setFilteredReservations(filteredReservations.filter((reservation) => reservation.idReservation !== id));
+      setReservations(
+        reservations.filter((reservation) => reservation.idReservation !== id)
+      );
+      setFilteredReservations(
+        filteredReservations.filter(
+          (reservation) => reservation.idReservation !== id
+        )
+      );
     } catch (error) {
       console.error(error);
     }
   };
 
+  const handleGenerateReport = () => {
+    const doc = new jsPDF({
+      orientation: "portrait",
+      unit: "mm",
+      format: "a4",
+    });
+
+    const margin = 10;
+
+    const pageWidth = doc.internal.pageSize.width;
+    const colWidth = (pageWidth - 2 * margin) / 5;
+
+    let yPos = margin + 3;
+
+    const title = "Rapport mensuel de réservations";
+
+    const titleWidth =
+      (doc.getStringUnitWidth(title) * doc.internal.getFontSize()) /
+      doc.internal.scaleFactor;
+
+    const titleX = (pageWidth - titleWidth) / 2;
+
+    doc.setFontSize(16);
+    doc.text(title, titleX, yPos);
+    yPos += 12;
+
+    const headers = [
+      "Libellé",
+      "Date prévue",
+      "Heure de début",
+      "Heure de fin",
+      "Effectué par",
+    ];
+
+    const data = reservations.map((reservation) => [
+      reservation.ressource.libelleRessource,
+      reservation.datePrevue,
+      reservation.heureDebut,
+      reservation.heureFin,
+      reservation.utilisateur.email,
+    ]);
+
+    doc.autoTable({
+      startY: yPos,
+      head: [headers],
+      body: data,
+      theme: "striped",
+      margin: { top: yPos },
+      columnStyles: {
+        0: { cellWidth: colWidth },
+        1: { cellWidth: colWidth },
+        2: { cellWidth: colWidth },
+        3: { cellWidth: colWidth },
+        4: { cellWidth: colWidth },
+      },
+    });
+
+    // Télécharger le PDF
+    doc.save("rapport_mensuel.pdf");
+  };
   return (
     <div style={{ marginTop: "20px" }}>
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <Button
-          component={Link}
-          to="/reservations-du-mois"
-          variant="contained"
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <TextField
+          id="search"
+          label="Recherche"
+          variant="outlined"
+          value={searchTerm}
+          onChange={handleSearch}
+          sx={{ mt: 1 }}
+        />
+        <IconButton
+          onClick={handleGenerateReport}
           sx={{
-            fontSize: "16px",
-            fontWeight: "bold",
-            letterSpacing: ".75px",
-            backgroundColor: "#113f36",
             "&:hover": {
-              backgroundColor: "#0D2924",
-              color: "white",
+              backgroundColor: "transparent",
             },
           }}
         >
-          Liste des Reservation Mensuel
-        </Button>
+          <PictureAsPdfIcon
+            fontSize="large"
+            sx={{
+              color: "#ff1b1b", 
+              width: "32px", 
+              height: "32px", 
+            }}
+          />
+        </IconButton>
       </div>
-      <TextField
-        id="search"
-        label="Recherche"
-        variant="outlined"
-        value={searchTerm}
-        onChange={handleSearch}
-        sx={{ mt: 1 }}
-      />
       <TableContainer component={Paper} sx={{ mt: 1 }}>
         <Table aria-label="reservation table">
           <TableHead>
@@ -190,23 +268,32 @@ const Reservation = () => {
               .slice(0, perPage)
               .map((reservation) => (
                 <TableRow key={reservation.idReservation}>
-                  <TableCell>{reservation.ressource.libelleRessource}</TableCell>
+                  <TableCell>
+                    {reservation.ressource.libelleRessource}
+                  </TableCell>
                   <TableCell>{reservation.datePrevue}</TableCell>
                   <TableCell>{reservation.heureDebut}</TableCell>
                   <TableCell>{reservation.heureFin}</TableCell>
                   <TableCell>{reservation.dateReservation}</TableCell>
                   <TableCell>{reservation.utilisateur.email}</TableCell>
                   <TableCell>
-                    <IconButton onClick={() => handleCancelReservation(reservation.idReservation)} sx={{
+                    <IconButton
+                      onClick={() =>
+                        handleCancelReservation(reservation.idReservation)
+                      }
+                      sx={{
                         backgroundColor: "#ff0000",
                         "&:hover": {
                           backgroundColor: "#720000",
                           color: "white",
                         },
-                    }}>
-                      <CancelIcon  sx={{
-                      color:"white"
-                    }} />
+                      }}
+                    >
+                      <CancelIcon
+                        sx={{
+                          color: "white",
+                        }}
+                      />
                     </IconButton>
                   </TableCell>
                 </TableRow>
@@ -214,7 +301,13 @@ const Reservation = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "10px" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          marginTop: "10px",
+        }}
+      >
         <FormControl sx={{ minWidth: 120, mr: 1 }}>
           <InputLabel id="per-page-label">Nombre par page</InputLabel>
           <Select
@@ -234,4 +327,4 @@ const Reservation = () => {
   );
 };
 
-export default Reservation;
+export default ReservationDuMois;

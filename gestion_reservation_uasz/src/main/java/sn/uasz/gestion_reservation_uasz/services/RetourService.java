@@ -42,17 +42,19 @@ public class RetourService {
         Ressource existingRessource = ressourceRepository.findById(rID).orElse(null);
 
         if (existingRessource != null && existingRessource.getEtat().equalsIgnoreCase("En pret")) {
-            r.setDateRetour(new Date(System.currentTimeMillis()));
-
-            List<Reservation> reservations = reservationRepository.findFutureReservationsForRessource(ressource, new Date());
+            
+            log.info("ressource avant", existingRessource);
+            List<Reservation> reservations = reservationRepository.findFutureReservationsForRessource(existingRessource, r.getDateRetour());
             if (reservations.isEmpty()) {
-                ressource.setEtat("Disponible");
+                existingRessource.setEtat("Disponible");
             }else{
-                ressource.setEtat("Reservee");
+                existingRessource.setEtat("Reservee");
             }
 
-            ressourceRepository.save(ressource);
+            ressourceRepository.save(existingRessource);
             r.setRessource(existingRessource);
+            log.info("ressource apres", existingRessource);
+             
             return repository.save(r);
 
 
