@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import Logo from "../assets/logos/Logo_uasz-bg-transparent.png";
-import "../styles/Navbar.css"; // Assurez-vous d'importer votre fichier CSS
+import "../styles/Navbar.css";  
 
 export default function Navbar() {
 

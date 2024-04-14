@@ -17,20 +17,32 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Cette classe représente le rôle d'un utilisateur dans le système de gestion des réservations.
+ */
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Role {
+    /**
+     * Identifiant unique du rôle.
+     */
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    /**
+     * Libellé du rôle.
+     */
     @Enumerated(EnumType.STRING)
     private TypeRole libelle;
 
+    /**
+     * Liste des utilisateurs ayant ce rôle.
+     */
     @JsonIgnore
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
     private List<Utilisateur> utilisateurs;
 }
-

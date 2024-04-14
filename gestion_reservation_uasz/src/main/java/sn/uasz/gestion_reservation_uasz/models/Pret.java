@@ -15,19 +15,41 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Représente un prêt dans le système de gestion de réservation.
+ */
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class Pret {
+
+    /**
+     * Identifiant unique du prêt.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idPret;
+
+    /**
+     * Date du prêt.
+     */
     @Temporal(TemporalType.DATE)
     private Date datePret;
+
+    /**
+     * Heure de début du prêt.
+     */
     private int heureDebutPret;
+
+    /**
+     * Durée du prêt en heures.
+     */
     private int duree;
 
+    /**
+     * Ressource associée à ce prêt.
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="ressource")
     private Ressource ressource;

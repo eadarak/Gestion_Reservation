@@ -7,6 +7,8 @@ export const URL_RETOURS = `${URL_API}/retours`;
 export const URL_RESSOURCE = `${URL_API}/ressource`;
 export const URL_RESERVATION = `${URL_API}/reservation`;
 export const URL_RAPPORT = `${URL_API}/rapport-mensuel`;
+export const URL_DOCUMENTATTION = "http://localhost:8080/api/swagger-ui/index.html#/";
+
 
 
 

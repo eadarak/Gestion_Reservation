@@ -29,6 +29,10 @@ import sn.uasz.gestion_reservation_uasz.repositories.RapportRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+/**
+ * Service responsable de la génération et de la gestion des rapports mensuels
+ * sur les réservations.
+ */
 @Service
 public class RapportService {
 
@@ -40,10 +44,22 @@ public class RapportService {
 
     private DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
+    /**
+     * Récupère le dernier rapport enregistré dans la base de données.
+     * 
+     * @return Le dernier rapport enregistré, ou null s'il n'y a aucun rapport.
+     */
     public Rapport obtenirDernierRapport() {
         return rapportRepository.findTopByOrderByDateCreationDesc();
     }
 
+    /**
+     * Télécharge le rapport mensuel le plus récent au format PDF.
+     * 
+     * @return Le contenu du rapport mensuel au format PDF.
+     * @throws IOException Si une erreur survient lors de la génération ou du
+     *                     téléchargement du rapport.
+     */
     public byte[] telechargerRapportMensuel() throws IOException {
         genererEtEnregistrerRapportMensuel();
 
@@ -56,6 +72,12 @@ public class RapportService {
         }
     }
 
+    /**
+     * Génère et enregistre un rapport mensuel sur les réservations.
+     * 
+     * @throws IOException Si une erreur survient lors de la génération ou de
+     *                     l'enregistrement du rapport.
+     */
     public void genererEtEnregistrerRapportMensuel() throws IOException {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -80,12 +102,27 @@ public class RapportService {
         }
     }
 
+    /**
+     * Obtient le nom du mois à partir de son numéro.
+     * 
+     * @param numeroMois Le numéro du mois (1 pour janvier, 2 pour février, etc.).
+     * @return Le nom du mois.
+     */
     private String obtenirNomMois(int numeroMois) {
         String[] mois = { "Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre",
                 "Octobre", "Novembre", "Décembre" };
         return mois[numeroMois - 1];
     }
 
+    /**
+     * Génère le contenu du rapport PDF à partir de la liste des réservations.
+     * 
+     * @param reservations La liste des réservations à inclure dans le rapport.
+     * @param utilisateur  L'utilisateur pour lequel le rapport est généré.
+     * @return Le contenu du rapport au format PDF.
+     * @throws IOException Si une erreur survient lors de la génération du contenu
+     *                     PDF.
+     */
     private byte[] genererContenuPDF(List<Reservation> reservations, Utilisateur utilisateur) throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Document document = new Document();
@@ -101,10 +138,28 @@ public class RapportService {
         return outputStream.toByteArray();
     }
 
+    /**
+     * Obtient le nombre total de rapports enregistrés dans la base de données.
+     * 
+     * @return Le nombre total de rapports.
+     */
     public int getNombreTotalRapports() {
         return (int) rapportRepository.count();
     }
 
+    /**
+     * Ajoute les détails des réservations au document PDF.
+     * 
+     * @param document       Le document PDF auquel ajouter les détails des
+     *                       réservations.
+     * @param reservations   La liste des réservations à inclure dans le document.
+     * @param utilisateur    L'utilisateur pour lequel le rapport est généré.
+     * @param nombreRapports Le nombre total de rapports enregistrés.
+     * @throws DocumentException Si une erreur survient lors de la manipulation du
+     *                           document PDF.
+     * @throws IOException       Si une erreur survient lors du chargement de
+     *                           l'image.
+     */
     private void addReservationsToDocument(Document document, List<Reservation> reservations, Utilisateur utilisateur,
             int nombreRapports) throws DocumentException, IOException {
         // Chemin de votre image (assurez-vous que l'image est accessible dans votre
