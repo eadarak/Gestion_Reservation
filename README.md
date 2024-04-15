@@ -92,7 +92,7 @@ Assurez-vous que les deux serveurs sont en cours d'exécution pour utiliser l'ap
 
 ---
 
-#AUTEUR
+# AUTEUR
 EL Hadji Abdou DRAME
 Marieme THIAM
 BAYE Mor DIOUF
