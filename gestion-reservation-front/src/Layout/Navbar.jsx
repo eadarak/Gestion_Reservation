@@ -1,12 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import Logo from "../assets/logos/Logo_uasz-bg-transparent.png";
 import "../styles/Navbar.css";  
 
 export default function Navbar() {
+  const [user, setUser] = useState(null);
 
+  useEffect(() => {
+    const token = sessionStorage.getItem('bearer');
+    console.log("token", token);
+  
+    if (token) {
+      const decodedPayload = JSON.parse(atob(token.split(".")[1]));
+      const email = decodedPayload.sub;
+      const userRole = decodedPayload.role;
+  
+      setUser({ email, role: userRole });
+      console.log("Informations sur l'utilisateur", { email, role: userRole });
+    }
+  }, []); 
   return (
-    <header className="sidebar">
+  <header className="sidebar">
       <div className="entete">
         <img src={Logo} alt="" />
         <span>Universite Assane Seck</span>

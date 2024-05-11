@@ -71,5 +71,11 @@ public class PretController {
     public ResponseEntity<String> supprimerPret(@PathVariable Long id){
         pService.supprimerPret(id);
         return ResponseEntity.status(HttpStatus.OK).body("Le pret " + id +" a ete supprime.");
-    }    
+    }  
+    
+    @GetMapping(path = "/total-pret")
+    public ResponseEntity<Long> counting() {
+        Long total = pService.totalPret();
+        return new ResponseEntity<Long>(total, HttpStatus.OK);
+    }
 }

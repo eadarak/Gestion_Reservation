@@ -111,4 +111,10 @@ public class ReservationController {
         rService.annuler_reservation(id);
         return ResponseEntity.status(HttpStatus.OK).body("La reservation " + id +" a ete annulee.");
     }
+
+    @GetMapping(path = "/total-reservation")
+    public ResponseEntity<Long> counting() {
+        Long total = rService.totalReservation();
+        return new ResponseEntity<Long>(total, HttpStatus.OK);
+    }
 }

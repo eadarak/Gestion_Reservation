@@ -230,4 +230,8 @@ public class ReservationService {
     public List<Reservation> listerReservationsDuMois() {
         return reservationRepository.findReservationsThisMonth();
     }
+
+    public long totalReservation(){
+        return reservationRepository.count();
+    }
 }

@@ -67,7 +67,7 @@ public class GestionReservationUaszApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		log.info("Application en cours d'exécution...");
 
-		// Création des rôles
+		// // Création des rôles
 		// Role role1 = new Role(null, TypeRole.UTILISATEUR,null);
 		// Role role2 = new Role(null, TypeRole.RESPONSABLE, null);
 		// Role role3 = new Role(null, TypeRole.ADMINISTRATEUR,null);

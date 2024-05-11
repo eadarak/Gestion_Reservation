@@ -1,46 +1,66 @@
 @import url("./_variable.css");
-.layout{
-    display: flex !important;
+/* .layout {
+  display: flex !important;
+} */
+.layout .main{
+  display: flex !important;
+  width: 100%;
+ 
+}
+
+.layout .contain  {
+  width:  99.2% ;
+}
+
+.layout .main .container .header,
+.layout .contain .header {
+  padding: 10px 15px;
+  height: 100px;
+  background-color: var(--color-vert-1);
+  color: var(--color-blanc);
+  font-size: 2rem;
+  align-items: center;
+}
+
+.layout .contain .header{
+  padding: 10px 50px;
 }
 
 
-.layout .container .header{
-    padding: 10px 15px;
-    height: 70px;
-    background-color: var(--color-vert-1) ;
-    color: var(--color-blanc);
-    font-size: 2%;
-    align-items: center;
-    
+.layout .main .container .header .header-info,
+.layout .contain .header .header-info  {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
 }
 
+.layout .main .container .header .header-info h2,
+.layout .contain .header .header-info h2 {
+  margin: 0;
+  letter-spacing: 1.75px;
+  text-transform: uppercase;
+  font-family: "Poppins";
+}
 
-.layout .container .header .header-info {
-    display: flex;
-    align-items: center;
-    justify-content: space-between; 
-    width: 100%;
-  }
-  
-  .layout .container .header .header-info h2 {
+.layout  .main .container .header .user-info,
+.layout  .contain .header .user-info{
+  color: white;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
 
-    margin: 0; 
-  }
-  
-  .layout .container .header .user-info {
-    color: white;
-    font-size: 1rem;
-    display: flex;
-    align-items: center;
-   gap: 10px;
-  }
-  
-  .layout .container .header .user-info .email {
-    margin-right: 10px;
-    color: rgba(255, 255, 255, .8);
-    font-size: 1.2rem;
-  }
-  
-  .layout .container .header .user-info svg{
-    font-size: 2.5rem;
-  }
+.layout .main .container .header .user-info .email,
+.layout .contain .header .user-info .email  {
+  margin-right: 10px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.5rem;
+  display: none;
+}
+
+.layout .main .container .header .user-info svg,
+.layout .contain .header .user-info svg {
+  font-size: 3rem;
+}

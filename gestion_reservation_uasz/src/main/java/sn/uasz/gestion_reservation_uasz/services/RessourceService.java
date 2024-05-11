@@ -140,4 +140,8 @@ public class RessourceService {
     public List<Ressource> listerRessourcesEnPret() {
         return ressourceRepository.findByEtatIn("En Pret");
     }
+
+    public Long totalRessource(){
+        return ressourceRepository.count();
+    }
 }
