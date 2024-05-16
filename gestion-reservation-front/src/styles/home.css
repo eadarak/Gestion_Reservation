@@ -48,3 +48,10 @@
     display: inherit;
 }
 
+.admin-space .row-chart{
+    background-color: #fff;
+    box-shadow: 4px 8px 10px #ccc, 8px 4px 10px #ccc;
+    padding: "10px 15px";
+    border: none;
+
+} 

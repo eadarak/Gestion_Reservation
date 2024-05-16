@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from './Navbar';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import '../styles/layout.css';
+import { Avatar } from '@mui/material';
+
 
 function Layout({ children }) {
   const [user, setUser] = useState(null);
@@ -31,8 +31,7 @@ function Layout({ children }) {
               <div className="header-info">
                 <h2>Gestion des réservations</h2>
                   <div className="user-info">
-                    <span className="email">{user.email}</span>
-                    <FontAwesomeIcon icon={faUserCircle} className="avatar" />
+                    <Avatar />
                   </div>
               </div>
             </div>
@@ -47,8 +46,9 @@ function Layout({ children }) {
                   <div className="header-info">
                     <h2>Gestion des réservations</h2>
                     <div className="user-info">
-                    <span className="email">{user.email}</span>
-                    <FontAwesomeIcon icon={faUserCircle} className="avatar" />
+                    <Avatar>
+                      
+                    </Avatar>
                   </div>
                   </div>
                 </div>

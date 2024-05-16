@@ -117,4 +117,10 @@ public class ReservationController {
         Long total = rService.totalReservation();
         return new ResponseEntity<Long>(total, HttpStatus.OK);
     }
+
+    @GetMapping(path = "/list/{id}")
+    public ResponseEntity<List<Reservation>> reservationsForUser(@PathVariable("id") Long id) {
+        List<Reservation> reservations = rService.listerReservationUtilisateur(id);
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
 }

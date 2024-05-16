@@ -5,6 +5,7 @@ import CountUp from "react-countup";
 import Typewriter from "typewriter-effect/dist/core";
 import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
+import { LineChart } from "@mui/x-charts/LineChart";
 
 import "../styles/home.css";
 import {
@@ -276,28 +277,7 @@ export default function Home() {
 
               <Button
                 component={Link}
-                to="/authentification"
-                variant="contained"
-                sx={{
-                  fontSize: "16px",
-                  fontWeight: "bold",
-                  letterSpacing: ".75px",
-                  backgroundColor: "white",
-                  color: "#11634c",
-                  marginTop: "20px",
-                  padding: "10px 15px",
-                  "&:hover": {
-                    backgroundColor: "#0D2924",
-                    color: "white",
-                  },
-                  borderRadius: "30px",
-                }}
-              >
-                Faire une Reservation
-              </Button>
-              <Button
-                component={Link}
-                to=""
+                to="/mes-reservations"
                 variant="contained"
                 sx={{
                   fontSize: "16px",
@@ -386,6 +366,18 @@ export default function Home() {
                   </div>
                 </div>
               </div>
+            </div>
+            <div className="row  row-chart mt-2">
+              <LineChart
+                xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]}
+                series={[
+                  {
+                    data: [2, 5.5, 2, 8.5, 1.5, 5],
+                  },
+                ]}
+                width={500}
+                height={300}
+              />
             </div>
           </div>
         </div>
