@@ -91,4 +91,8 @@ public class PretService {
     public void supprimerPret(Long id) {
         pRepository.deleteById(id);
     }
+
+    public long totalPret(){
+        return  pRepository.count();
+    }
 }

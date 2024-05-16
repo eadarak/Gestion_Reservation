@@ -15,6 +15,7 @@ import Inscription from './Component/Inscription.jsx';
 import FaireReservation from './Pages/FaireReservation.jsx';
 import FairePret from './Pages/FairePret.jsx';
 import ReservationDuMois from './Pages/ReservationDuMois.jsx';
+import ReservationUser from './Pages/ReservationUser.jsx';
 
 const router = createBrowserRouter([
   {
@@ -68,6 +69,10 @@ const router = createBrowserRouter([
   {
     path: '/reservations-du-mois',
     element: <Layout>< ReservationDuMois/></Layout>
+  },
+  {
+    path: '/mes-reservations',
+    element: <Layout>< ReservationUser/></Layout>
   }
 ]);
 

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from './Navbar';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import '../styles/layout.css';
+import { Avatar } from '@mui/material';
+
 
 function Layout({ children }) {
   const [user, setUser] = useState(null);
@@ -19,32 +19,55 @@ function Layout({ children }) {
       setUser({ email, role: userRole });
       console.log("Informations sur l'utilisateur", { email, role: userRole });
     }
-  }, []); // Assurez-vous de passer un tableau vide comme deuxième argument pour exécuter cet effet une seule fois après le premier rendu
-  
-  
-
+  }, []);
 
   return (
     <div className="layout">
-      <Navbar />
-      <div className="container">
-        <div className="row header">
-          <div className="header-info"> {/* Ajoutez la classe header-info ici */}
-            <h2>Gestion des réservations</h2>
-            {user && (
-              <div className="user-info">
-                <span className="email">{user.email}</span>
-                <FontAwesomeIcon icon={faUserCircle} className="avatar" />
+      {(user && user.role !== 'UTILISATEUR') && (
+        <div className='main'>
+          <Navbar />
+          <div className="container">
+            <div className="row header">
+              <div className="header-info">
+                <h2>Gestion des réservations</h2>
+                  <div className="user-info">
+                    <Avatar />
+                  </div>
               </div>
-            )}
+            </div>
+            <div className="row">{children}</div>
           </div>
         </div>
-        <div className="row">{children}</div>
-      </div>
+      )}
+
+      {(user && user.role === 'UTILISATEUR')&& (
+              <div className="contain">
+                <div className="row header">
+                  <div className="header-info">
+                    <h2>Gestion des réservations</h2>
+                    <div className="user-info">
+                    <Avatar>
+                      
+                    </Avatar>
+                  </div>
+                  </div>
+                </div>
+                <div className="container">{children}</div>
+              </div>
+            )}
+
+      {user === null && (
+        <div className="contain">
+          <div className="row header">
+            <div className="header-info">
+              <h2>Gestion des réservations</h2>
+            </div>
+          </div>
+          <div className="container">{children}</div>
+        </div>
+      )}
     </div>
   );
-  
-  
 }
 
 export default Layout;

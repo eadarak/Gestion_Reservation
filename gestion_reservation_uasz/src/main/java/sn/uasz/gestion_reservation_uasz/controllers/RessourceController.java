@@ -115,4 +115,11 @@ public class RessourceController {
         rService.DeleteRessource(id);
         return ResponseEntity.status(HttpStatus.OK).body("La ressource" + id +" a ete supprime.");
     }    
+
+
+    @GetMapping(path = "/total-ressource")
+    public ResponseEntity<Long> counting() {
+        Long total = rService.totalRessource();
+        return new ResponseEntity<Long>(total, HttpStatus.OK);
+    }
 }

@@ -122,4 +122,8 @@ public class UtilisateurService implements UserDetailsService {
                 .findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username + " pas de correspondance"));
     }
+
+    public long numberUsers(){
+        return this.uRepository.count();
+    }
 }
